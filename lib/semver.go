@@ -14,19 +14,19 @@ func GetSemver(ctx context.Context, tgconstraint *string, ghClient *github.Clien
 
 	tglist := GetAppList(ctx, ghClient)
 	fmt.Printf("Reading required version from constraint: %s\n", *tgconstraint)
-	tfversion, err := SemVerParser(tgconstraint, tglist)
-	return tfversion, err
+	tgversion, err := SemVerParser(tgconstraint, tglist)
+	return tgversion, err
 }
 
 // ValidateSemVer : Goes through the list of terragrunt version, return a valid tf version for contraint provided
 func SemVerParser(tfconstraint *string, tflist []string) (string, error) {
-	tfversion := ""
+	tgversion := ""
 	constraints, err := semver.NewConstraint(*tfconstraint) //NewConstraint returns a Constraints instance that a Version instance can be checked against
 	if err != nil {
 		return "", fmt.Errorf("error parsing constraint: %s", err)
 	}
 	versions := make([]*semver.Version, len(tflist))
-	//put tfversion into semver object
+	//put tgversion into semver object
 	for i, tfvals := range tflist {
 		version, err := semver.NewVersion(tfvals) //NewVersion parses a given version and returns an instance of Version or an error if unable to parse the version.
 		if err != nil {
@@ -39,10 +39,10 @@ func SemVerParser(tfconstraint *string, tflist []string) (string, error) {
 
 	for _, element := range versions {
 		if constraints.Check(element) { // Validate a version against a constraint
-			tfversion = element.String()
-			fmt.Printf("Matched version: %s\n", tfversion)
-			if ValidVersionFormat(tfversion) { //check if version format is correct
-				return tfversion, nil
+			tgversion = element.String()
+			fmt.Printf("Matched version: %s\n", tgversion)
+			if ValidVersionFormat(tgversion) { //check if version format is correct
+				return tgversion, nil
 			}
 		}
 	}

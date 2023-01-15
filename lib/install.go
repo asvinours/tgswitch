@@ -22,7 +22,7 @@ const (
 )
 
 var (
-	installLocation = "/tmp"
+	installLocation string = "/tmp"
 )
 
 // initialize : removes existing symlink to terragrunt binary
@@ -110,7 +110,7 @@ func AddRecent(requestedVersion string) {
 }
 
 // GetRecentVersions : get recent version from file
-func GetRecentVersions() ([]string, error) {
+func GetRecentVersions(interactive bool) ([]string, error) {
 
 	installLocation = GetInstallLocation()
 
@@ -135,7 +135,11 @@ func GetRecentVersions() ([]string, error) {
 			/*      output can be confusing since it displays the 3 most recent used terragrunt version
 			append the string *recent to the output to make it more user friendly
 			*/
-			outputRecent = append(outputRecent, fmt.Sprintf("%s *recent", line))
+			if interactive {
+				outputRecent = append(outputRecent, fmt.Sprintf("%s *recent", line))
+			} else {
+				outputRecent = append(outputRecent, line)
+			}
 		}
 		return outputRecent, nil
 	}

@@ -13,7 +13,7 @@ OSXBIN    = $(DIR)/$(EXE)-$(VER)-$(GOOSX)-$(GOARCH)
 LINUXBIN  = $(DIR)/$(EXE)-$(VER)-$(GOOSLINUX)-$(GOARCH)
 
 $(EXE): go.mod *.go lib/*.go
-	go build -v -ldflags "-X main.version=$(VER)" -o $@ $(PKG)
+	go build -v -ldflags "-X main.version=$(VER)" -o $(DIR)/$@ $(PKG)
 
 .PHONY: release
 release: $(EXE) darwin linux
@@ -36,7 +36,7 @@ linux: $(LINUXBIN)
 
 .PHONY: clean
 clean:
-	rm -f $(EXE) $(EXE)-*-*-*
+	rm -vf $(EXE) $(EXE)-*-*-* $(DIR)/*
 
 .PHONY: test
 test: $(EXE)

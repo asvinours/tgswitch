@@ -12,8 +12,8 @@ function commentStart(){
 }
 
 function commentComplete(){
-    echo "### Test complete ###" 
-    echo "" 
+    echo "### Test complete ###"
+    echo ""
 }
 
 function runtestdir(){
