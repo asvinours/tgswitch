@@ -47,7 +47,6 @@ func SemVerParser(tfconstraint *string, tflist []string) (string, error) {
 		}
 	}
 
-	PrintInvalidTFVersion()
 	return "", fmt.Errorf("error parsing constraint: %s", *tfconstraint)
 }
 

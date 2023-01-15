@@ -46,7 +46,7 @@ const (
 	repoName  string = "terragrunt"
 )
 
-var version = "0.8.0\n"
+var version = "0.8.1\n"
 
 func main() {
 	ctx = context.Background()
@@ -290,14 +290,13 @@ func installFromConstraint(tgconstraint *string, custBinPath string) {
 	}
 
 	if preferLocalBinaries {
-		fmt.Printf("Searching for local binary matching the constraint pattern: %s\n", *tgconstraint)
+		fmt.Println("Searching for local binary matching the constraint pattern")
 		recentVersions, _ := lib.GetRecentVersions(false)
-		tgversion, err = lib.SemVerParser(tgconstraint, recentVersions)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+		existingVersion, errSemver := lib.SemVerParser(tgconstraint, recentVersions)
+		if errSemver == nil {
+			fmt.Printf("Found local binary matching the constraint pattern: %s\n", existingVersion)
+			tgversion = existingVersion
 		}
-		fmt.Printf("Found local binary matching the constraint pattern: %s\n", tgversion)
 	}
 
 	lib.Install(ctx, tgversion, custBinPath, ghClient)
