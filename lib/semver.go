@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v66/github"
 	semver "github.com/hashicorp/go-version"
 )
 

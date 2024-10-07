@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v66/github"
 )
 
 // VersionExist : check if requested version exist
@@ -53,15 +53,23 @@ func GetAppList(ctx context.Context, ghClient *github.Client) []string {
 	repoName := ctx.Value("repoName").(string)
 
 	opt := &github.ListOptions{Page: 1, PerPage: 100}
-	releases, _, err := ghClient.Repositories.ListReleases(ctx, repoOwner, repoName, opt)
-	if err != nil {
-		log.Fatal("Unable to make request. Please try again.")
+	var allReleases []*github.RepositoryRelease
+	for {
+		repos, resp, err := ghClient.Repositories.ListReleases(ctx, repoOwner, repoName, opt)
+		if err != nil {
+			log.Fatal("Unable to make request. Please try again.")
+		}
+		allReleases = append(allReleases, repos...)
+		if resp.NextPage == 0 || resp.NextPage >= 3 {
+			break
+		}
+		opt.Page = resp.NextPage
 	}
 
 	var re = regexp.MustCompile(`^v([0-9]+\.[0-9]+\.[0-9]+)$`)
 
 	values := []string{}
-	for _, v := range releases {
+	for _, v := range allReleases {
 		name := *v.Name
 		res := re.MatchString(name)
 		if !res {

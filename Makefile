@@ -40,8 +40,6 @@ clean:
 
 .PHONY: test
 test: $(EXE)
-	mkdir -vp $(DIR)
-	mv $(EXE) $(DIR)
 	go test -v ./...
 
 .PHONY: install

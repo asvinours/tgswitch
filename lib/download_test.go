@@ -10,7 +10,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v66/github"
 	lib "github.com/warrensbox/tgswitch/lib"
 )
 
