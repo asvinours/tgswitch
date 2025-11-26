@@ -146,7 +146,7 @@ func GetRecentVersions(interactive bool) ([]string, error) {
 	return nil, nil
 }
 
-//CreateRecentFile : create a recent file
+// CreateRecentFile : create a recent file
 func CreateRecentFile(requestedVersion string) {
 
 	installLocation = GetInstallLocation()
@@ -174,7 +174,7 @@ func ValidVersionFormat(version string) bool {
 	return semverRegex.MatchString(version)
 }
 
-//Install : Install the provided version in the argument
+// Install : Install the provided version in the argument
 func Install(ctx context.Context, tgVersion string, usrBinPath string, ghClient *github.Client) string {
 	/* Check to see if user has permission to the default bin location which is  "/usr/local/bin/terragrunt"
 	 * If user does not have permission to default bin location, proceed to create $HOME/bin and install the tgswitch there
@@ -245,7 +245,7 @@ func FindMatchingReleaseAsset(ctx context.Context, ghClient *github.Client, tgVe
 	goarch := runtime.GOARCH
 	goos := runtime.GOOS
 
-	var re = regexp.MustCompile("terragrunt" + "_" + goos + "_" + goarch)
+	var re = regexp.MustCompile("terragrunt" + "_" + goos + "_" + goarch + "$")
 
 	var asset *github.ReleaseAsset
 	release, _, err := ghClient.Repositories.GetReleaseByTag(ctx, repoOwner, repoName, "v"+tgVersion)
@@ -271,9 +271,9 @@ func FindMatchingReleaseAsset(ctx context.Context, ghClient *github.Client, tgVe
 	return asset
 }
 
-//InstallableBinLocation : Checks if terragrunt is installable in the location provided by the user.
-//If not, create $HOME/bin. Ask users to add  $HOME/bin to $PATH
-//Return $HOME/bin as install location
+// InstallableBinLocation : Checks if terragrunt is installable in the location provided by the user.
+// If not, create $HOME/bin. Ask users to add  $HOME/bin to $PATH
+// Return $HOME/bin as install location
 func InstallableBinLocation(userBinPath string) string {
 
 	usr, errCurr := user.Current()
@@ -321,7 +321,7 @@ func PrintCreateDirStmt(unableDir string, writable string) {
 	fmt.Printf("RUN `export PATH=$PATH:%s` to append bin to $PATH\n", writable)
 }
 
-//ConvertExecutableExt : convert excutable with local OS extension
+// ConvertExecutableExt : convert excutable with local OS extension
 func ConvertExecutableExt(fpath string) string {
 	switch runtime.GOOS {
 	case "windows":
